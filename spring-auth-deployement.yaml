@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-k8s-auth
+  labels:
+    app: spring-k8s-auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-k8s-auth
+  template:
+    metadata:
+      labels:
+        app: spring-k8s-auth
+    spec:
+      containers:
+      - name: spring-k8s-auth
+        image: minurakariyawasam/spring-k8s-auth
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-k8s-auth-service
+spec:
+  selector:
+    app: spring-k8s-auth
+  type: LoadBalancer  
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30000
